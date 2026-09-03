@@ -15,9 +15,8 @@ export const validateEnv = () => {
         process.env.SUPABASE_PUBLISHABLE_KEY
     ));
     if (!hasDb) {
-        console.error('[FATAL ERROR] Server startup failed. Missing required database configuration: DATABASE_URL or SUPABASE_URL');
-        console.error('Please verify your environment configuration against .env.example');
-        process.exit(1);
+        console.error('[FATAL ERROR] Server startup failed. Missing required database configuration');
+        throw new Error('Missing required database configuration');
     }
 
     const requiredVars = [
@@ -33,8 +32,7 @@ export const validateEnv = () => {
 
     if (missingVars.length > 0) {
         console.error(`[FATAL ERROR] Server startup failed. Missing required environment variables: ${missingVars.join(', ')}`);
-        console.error('Please verify your environment configuration against .env.example');
-        process.exit(1);
+        throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
     }
 
     if (process.env.NODE_ENV === 'production' && process.env.JWT_SECRET && process.env.JWT_SECRET.length < 16) {

@@ -83,10 +83,8 @@ export const connectDB = async () => {
     }
     const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL;
     if (!connectionString) {
-        console.error('\n[DATABASE CONFIG ERROR] Missing DATABASE_URL in server/.env');
-        console.error('Add your Supabase PostgreSQL connection URI to server/.env:');
-        console.error('DATABASE_URL=postgresql://postgres.rynhnhmtzggbwkgulrph:[YOUR-DB-PASSWORD]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres\n');
-        process.exit(1);
+        console.error('\n[DATABASE CONFIG ERROR] Missing database URI in environment configuration');
+        throw new Error('Missing database connection string');
     }
     try {
         const pool = getPool();

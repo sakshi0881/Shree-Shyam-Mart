@@ -11,13 +11,24 @@ async function initialize() {
             validateEnv();
             await connectDB();
             await connectCloudinary();
-        })();
+        })().catch((err) => {
+            initializationPromise = null;
+            throw err;
+        });
     }
 
     await initializationPromise;
 }
 
 export default async function handler(req, res) {
-    await initialize();
-    return app(req, res);
+    try {
+        await initialize();
+        return app(req, res);
+    } catch (err) {
+        console.error('[SERVERLESS INIT ERROR]:', err.message || err);
+        return res.status(500).json({
+            success: false,
+            message: `Serverless initialization error: ${err.message || 'Check environment variables in Vercel settings'}`
+        });
+    }
 }
