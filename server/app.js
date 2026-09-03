@@ -27,7 +27,7 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// 3. CORS configuration (Dynamic environment origins)
+// 3. CORS configuration (Dynamic environment origins + Vercel preview URLs)
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -36,7 +36,12 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'test') {
+        if (
+            !origin || 
+            allowedOrigins.includes(origin) || 
+            origin.endsWith('.vercel.app') || 
+            process.env.NODE_ENV === 'test'
+        ) {
             callback(null, true);
         } else {
             callback(new Error('CORS blocked origin'));

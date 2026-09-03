@@ -1,6 +1,7 @@
 {
   "name": "shree-shyam-mart",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "description": "Shree Shyam Mart - Cash on Delivery E-Commerce Store",
   "workspaces": [
