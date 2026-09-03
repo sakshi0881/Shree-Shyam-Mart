@@ -115,17 +115,22 @@ app.get('/ready', async (req, res) => {
 });
 
 
-// 7. Application Routes
-app.use('/api/user', userRouter);
-app.use('/api/seller', sellerRouter);
-app.use('/api/product', productRouter);
-app.use('/api/cart', cartRouter);
-app.use('/api/address', addressRouter);
-app.use('/api/order', orderRouter);
+// 7. Application Routes (Mounted under both /api and root for serverless reverse proxy resilience)
+const mountAppRoutes = (prefix = '/api') => {
+    app.use(`${prefix}/user`, userRouter);
+    app.use(`${prefix}/seller`, sellerRouter);
+    app.use(`${prefix}/product`, productRouter);
+    app.use(`${prefix}/cart`, cartRouter);
+    app.use(`${prefix}/address`, addressRouter);
+    app.use(`${prefix}/order`, orderRouter);
+};
+
+mountAppRoutes('/api');
+mountAppRoutes('');
 
 // 8. 404 Handler for Undefined API Routes
 app.use((req, res, next) => {
-    if (req.path.startsWith('/api')) {
+    if (req.path.startsWith('/api') || req.path.startsWith('/product') || req.path.startsWith('/user') || req.path.startsWith('/seller') || req.path.startsWith('/cart') || req.path.startsWith('/order') || req.path.startsWith('/address')) {
         return res.status(404).json({ success: false, message: `Endpoint not found: ${req.method} ${req.originalUrl}` });
     }
     next();

@@ -23,6 +23,9 @@ async function initialize() {
 export default async function handler(req, res) {
     try {
         await initialize();
+        if (req.headers['x-matched-path']) {
+            req.url = req.headers['x-matched-path'];
+        }
         return app(req, res);
     } catch (err) {
         console.error('[SERVERLESS INIT ERROR]:', err.message || err);
