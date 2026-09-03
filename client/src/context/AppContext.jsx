@@ -23,46 +23,43 @@ export const AppContextProvider = ({children})=> {
     const [searchQuery, setSearchQuery ] =useState("");
 
     // fetch seller status
-    const fetchSeller = async ()=>{
+    const fetchSeller = async () => {
         try {
-            const {data} = await axios.get('/api/seller/is-auth')
-            if(data.success){
-                setIsSeller(true)
-            }else{
-                setIsSeller(false)
-            }
+            const { data } = await axios.get('/api/seller/is-auth');
+            setIsSeller(Boolean(data && data.success));
         } catch (error) {
-            setIsSeller(false)
+            setIsSeller(false);
         }
-    }
+    };
 
-    //fetch user Auth Status, user data and cart items
-    const fetchUser = async ()=>{
+    // fetch user Auth Status, user data and cart items
+    const fetchUser = async () => {
         try {
-            const {data} = await axios.get('/api/user/is-auth');
-            if(data.success){
-                setUser(data.user)
-                setCartItems(data.user.cartItems)
+            const { data } = await axios.get('/api/user/is-auth');
+            if (data && data.success && data.user) {
+                setUser(data.user);
+                setCartItems(data.user.cartItems || {});
+            } else {
+                setUser(null);
             }
         } catch (error) {
-            setUser(null)
+            setUser(null);
         }
-    }
+    };
 
-    //fetch all products
-    const fetchProducts = async ()=>{
+    // fetch all products
+    const fetchProducts = async () => {
         try {
-            const { data } = await axios.get('/api/product/list')
-            if(data.success){
-                setProducts(data.products)
-            }else{
-                toast.error(data.message)
+            const { data } = await axios.get('/api/product/list');
+            if (data && data.success && Array.isArray(data.products)) {
+                setProducts(data.products);
+            } else {
+                console.warn('[CATALOG] Product fetch returned unexpected payload:', data);
             }
         } catch (error) {
-            // Silently ignore network errors (e.g. server not yet ready on local dev)
-            if (error.response) toast.error(error.response.data?.message || error.message)
+            console.error('[CATALOG] Failed to fetch products:', error.response?.data || error.message || error);
         }
-    }
+    };
 
     //add product to cart
     const addToCart = (itemId)=> {
@@ -130,12 +127,11 @@ export const AppContextProvider = ({children})=> {
         const updateCart = async ()=>{
             try {
                 const {data} = await axios.post('/api/cart/update',{cartItems})
-                if(!data.success){
-                    toast.error(data.message)
+                if(data && !data.success && data.message){
+                    console.warn('[CART SYNC]', data.message)
                 }
             } catch (error) {
-                // Silently ignore network errors on cart sync
-                if (error.response) toast.error(error.response.data?.message || error.message)
+                console.error('[CART SYNC] Failed to sync cart:', error.response?.data || error.message);
             }
         }
         if(user){
