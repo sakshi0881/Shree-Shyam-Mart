@@ -76,6 +76,8 @@ import dry_fruits_image from "./dry_fruits_image.png";
 import masala_image from "./masala_image.jpg";
 import oil_image from "./oil_image.jpg";
 import vermicelli_image from "./vermicelli_image.png";
+import chips_image from "./chips_image.jpg";
+import chocolate_image from "./chocolate_image.webp";
 
 export const assets = {
   logo,
@@ -175,10 +177,22 @@ export const categories = [
     bgColor: "#E0F6FE",
   },
   {
-    text: "Vermicelli and Pasta",
-    path: "Vermicelli and Pasta",
+    text: "Vermicelli & Pasta",
+    path: "Vermicelli & Pasta",
     image: vermicelli_image,
     bgColor: "#FEF6DA",
+  },
+   {
+    text: "Chips & Namkeens",
+    path: "Chips & Namkeens",
+    image: chips_image,
+    bgColor: "#E1F5EC",
+  },
+  {
+    text: "Chocolate & Biscuit",
+    path: "Chocolate & Biscuit",
+    image: chocolate_image,
+    bgColor: "#F0F5DE",
   }
   
 ];
