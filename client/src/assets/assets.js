@@ -78,6 +78,7 @@ import oil_image from "./oil_image.jpg";
 import vermicelli_image from "./vermicelli_image.png";
 import chips_image from "./chips_image.jpg";
 import chocolate_image from "./chocolate_image.webp";
+import soap_image from "./soap_image.jpg";
 
 export const assets = {
   logo,
@@ -117,7 +118,7 @@ export const categories = [
     bgColor: "#FEF6DA",
   },
   {
-    text: "Dry Fruits",
+    text: "Dry Fruits, Seeds & Nuts",
     path: "Dry Fruits",
     image: dry_fruits_image,
     bgColor: "#FEE6CD",
@@ -193,7 +194,13 @@ export const categories = [
     path: "Chocolate & Biscuit",
     image: chocolate_image,
     bgColor: "#F0F5DE",
-  }
+  },
+  {
+    text: "Soap & Detergents",
+    path: "Soap & Detergents",
+    image: soap_image,
+    bgColor: "#F1E3F9",
+  },
   
 ];
 
